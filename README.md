@@ -1,7 +1,7 @@
 yii2-image
 ==========
 
-Imple to use Yii2 Framework extension for image manipulating using powerful Kohana Image Library.  Inspired by old yii extension 
+Simple to use Yii2 Framework extension for image manipulating using powerful Kohana Image Library.  Inspired by old yii extension 
 http://www.yiiframework.com/extension/image/ and Kohana Image Library https://github.com/kohana/image
 
 Installation

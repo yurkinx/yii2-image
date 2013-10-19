@@ -1,6 +1,6 @@
 {
     "name": "yurkinx/yii2-image",
-    "description": "Yii2 Framework extension for image manipulating using Kohana Image extension.",
+    "description": "Yii2 extension for image manipulating using Kohana Image Library.",
     "keywords": ["yii2", "extension", "image"],
     "homepage": "https://github.com/yurkinx/yii2-image",
     "type": "yii2-extension",
@@ -14,8 +14,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.0",
-	"yiisoft/yii2": "dev-master",
-        "yiisoft/yii2-composer": "dev-master"
+	"yiisoft/yii2": "*",
     },
      "autoload": {
                 "psr-0": {

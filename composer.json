@@ -14,7 +14,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.0",
-	"yiisoft/yii2": "*",
+	"yiisoft/yii2": "*"
     },
      "autoload": {
                 "psr-0": {

@@ -13,12 +13,10 @@ Installation
 		    "url": "http://github.com/yurkinx/yii2-image"
 		}
 	 ],
-	 
 "require": {
 		"yurkinx/yii2-image": "master"
 	 }
 ```
-
 Configuration
 -------------
 In config file
@@ -45,7 +43,7 @@ Usage
 		echo 	$image->resize($width,$height)->rotate(30)->render();
 ```
 
-Supported methods out of the box of Kohana Image Library:
+Supported methods out of the box from Kohana Image Library:
 ```php
 $image->resize($width = NULL, $height = NULL, $master = NULL);
 $image->crop($width, $height, $offset_x = NULL, $offset_y = NULL);
@@ -57,16 +55,28 @@ $image->reflection($height = NULL, $opacity = 100, $fade_in = FALSE);
 $image->flip($direction);
 $image->background($color, $opacity = 100);
 $image->watermark(Image $watermark, $offset_x = NULL, $offset_y = NULL, $opacity = 100);
-
- // Resizing constraints ($master)
+```
+^Using resize with resize constrains^
+```php
+$image->resize($width,$height,Yii\image\drivers\Image::HEIGHT);
+```
+Possible resize constrains:
+```php
+// Resizing constraints ($master)
     const NONE    = 0x01;
     const WIDTH   = 0x02;
     const HEIGHT  = 0x03;
     const AUTO    = 0x04;
     const INVERSE = 0x05;
     const PRECISE = 0x06;
-
-  // Flipping directions ($direction)
+```
+^Using flipp with flipping directions^ 
+```php
+// Flipping directions ($direction)
+$image->flip(Yii\image\drivers\Image::HORIZONTAL);
+```
+Possible flipping directions:
+```php
      const HORIZONTAL = 0x11;
      const VERTICAL   = 0x12;
 ```

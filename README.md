@@ -7,15 +7,12 @@ http://www.yiiframework.com/extension/image/ and Kohana Image Library https://gi
 Installation
 ------------
 ```code
-"repositories": [
-		{
-		    "type": "vcs",
-		    "url": "http://github.com/yurkinx/yii2-image"
-		}
-	 ],
-"require": {
-		"yurkinx/yii2-image": "master"
-	 }
+{
+	"require": 
+	{
+  		"yurkinx/yii2-image": "dev-master"
+	}
+}
 ```
 Configuration
 -------------

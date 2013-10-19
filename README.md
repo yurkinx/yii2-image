@@ -28,19 +28,18 @@ Add image component
 'components' => array(
         ...
         'image' => array(
-        	 		'class' => 'yii\image\ImageDriver',
-        			 'driver' => 'GD',  //GD or Imagick
-        		    ),
+        	 	'class' => 'yii\image\ImageDriver',
+        		'driver' => 'GD',  //GD or Imagick
+        		),
 		    )
 ```
-
 Usage
 -----
 ```php
-    $file=Yii::getAlias('@app/pass/to/file'); 
-		$image=Yii::$app->image->load($file);
-		header("Content-Type: image/png");
-		echo 	$image->resize($width,$height)->rotate(30)->render();
+$file=Yii::getAlias('@app/pass/to/file'); 
+$image=Yii::$app->image->load($file);
+header("Content-Type: image/png");
+echo 	$image->resize($width,$height)->rotate(30)->render();
 ```
 
 Supported methods out of the box from Kohana Image Library:
@@ -56,7 +55,7 @@ $image->flip($direction);
 $image->background($color, $opacity = 100);
 $image->watermark(Image $watermark, $offset_x = NULL, $offset_y = NULL, $opacity = 100);
 ```
-^Using resize with resize constrains^
+**Using resize with resize constrains**
 ```php
 $image->resize($width,$height,Yii\image\drivers\Image::HEIGHT);
 ```
@@ -70,7 +69,7 @@ Possible resize constrains:
     const INVERSE = 0x05;
     const PRECISE = 0x06;
 ```
-^Using flipp with flipping directions^ 
+**Using flip with flipping directions**
 ```php
 // Flipping directions ($direction)
 $image->flip(Yii\image\drivers\Image::HORIZONTAL);

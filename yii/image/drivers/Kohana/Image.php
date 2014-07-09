@@ -500,14 +500,14 @@ abstract class Kohana_Image {
          *     $mark = Image::factory('upload/watermark.png');
          *     $image->watermark($mark, TRUE, TRUE);
          *
-         * @param   Image    $watermark  watermark Image instance
-         * @param   integer  $offset_x   offset from the left
-         * @param   integer  $offset_y   offset from the top
-         * @param   integer  $opacity    opacity of watermark: 1-100
+         * @param   Kohana_Image  $watermark  watermark Image instance
+         * @param   integer       $offset_x   offset from the left
+         * @param   integer       $offset_y   offset from the top
+         * @param   integer       $opacity    opacity of watermark: 1-100
          * @return  $this
          * @uses    Image::_do_watermark
          */
-        public function watermark(Image $watermark, $offset_x = NULL, $offset_y = NULL, $opacity = 100)
+        public function watermark(Kohana_Image $watermark, $offset_x = NULL, $offset_y = NULL, $opacity = 100)
         {
                 if ($offset_x === NULL)
                 {
@@ -724,13 +724,13 @@ abstract class Kohana_Image {
         /**
          * Execute a watermarking.
          *
-         * @param   Image    $image     watermarking Image
-         * @param   integer  $offset_x  offset from the left
-         * @param   integer  $offset_y  offset from the top
-         * @param   integer  $opacity   opacity of watermark
+         * @param   Kohana_Image  $image     watermarking Kohana_Image
+         * @param   integer       $offset_x  offset from the left
+         * @param   integer       $offset_y  offset from the top
+         * @param   integer       $opacity   opacity of watermark
          * @return  void
          */
-        abstract protected function _do_watermark(Image $image, $offset_x, $offset_y, $opacity);
+        abstract protected function _do_watermark(Kohana_Image $image, $offset_x, $offset_y, $opacity);
 
         /**
          * Execute a background.

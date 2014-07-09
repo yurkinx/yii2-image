@@ -443,13 +443,13 @@ class Kohana_Image_GD extends Kohana_Image {
         /**
          * Execute a watermarking.
          *
-         * @param   Image    $image     watermarking Image
-         * @param   integer  $offset_x  offset from the left
-         * @param   integer  $offset_y  offset from the top
-         * @param   integer  $opacity   opacity of watermark
+         * @param   Kohana_Image  $image     watermarking Kohana_Image
+         * @param   integer       $offset_x  offset from the left
+         * @param   integer       $offset_y  offset from the top
+         * @param   integer       $opacity   opacity of watermark
          * @return  void
          */
-        protected function _do_watermark(Image $watermark, $offset_x, $offset_y, $opacity)
+        protected function _do_watermark(Kohana_Image $watermark, $offset_x, $offset_y, $opacity)
         {
                 if (empty(Image_GD::$_available_functions[Image_GD::IMAGELAYEREFFECT]))
                 {

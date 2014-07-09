@@ -202,7 +202,7 @@ class Kohana_Image_Imagick extends Kohana_Image {
                 return FALSE;
         }
 
-        protected function _do_watermark(Image $image, $offset_x, $offset_y, $opacity)
+        protected function _do_watermark(Kohana_Image $image, $offset_x, $offset_y, $opacity)
         {
                 // Convert the Image intance into an Imagick instance
                 $watermark = new Imagick;

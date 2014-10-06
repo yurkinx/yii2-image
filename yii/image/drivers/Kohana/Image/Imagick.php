@@ -2,6 +2,8 @@
 namespace yii\image\drivers;
 
 use yii\base\ErrorException;
+use \Imagick;
+use \ImagickPixel;
 /**
  * Support for image manipulation using [Imagick](http://php.net/Imagick).
  *

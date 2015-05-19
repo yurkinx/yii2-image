@@ -63,8 +63,7 @@ class Kohana_Image_GD extends Kohana_Image {
 
                 if ( ! version_compare($version, '2.0.1', '>='))
                 {
-                        throw new ErrorException('Image_GD requires GD version :required or greater, you have :version',
-                                array('required' => '2.0.1', ':version' => $version));
+                        throw new ErrorException(sprintf('Image_GD requires GD version 2.0.1 or greater, you have %s',$version));
                 }
 
                 return Image_GD::$_checked = TRUE;
@@ -109,8 +108,7 @@ class Kohana_Image_GD extends Kohana_Image {
 
                 if ( ! isset($create) OR ! function_exists($create))
                 {
-                        throw new ErrorException('Installed GD does not support :type images',
-                                array(':type' => image_type_to_extension($this->type, FALSE)));
+                        throw new ErrorException(sprintf('Installed GD does not support %s images',image_type_to_extension($this->type, FALSE)));
                 }
 
                 // Save function for future use
@@ -251,8 +249,7 @@ class Kohana_Image_GD extends Kohana_Image {
         {
                 if (empty(Image_GD::$_available_functions[Image_GD::IMAGEROTATE]))
                 {
-                        throw new ErrorException('This method requires :function, which is only available in the bundled version of GD',
-                                array(':function' => 'imagerotate'));
+                        throw new ErrorException('This method requires imagerotate, which is only available in the bundled version of GD');
                 }
 
                 // Loads image if not yet loaded
@@ -333,8 +330,7 @@ class Kohana_Image_GD extends Kohana_Image {
         {
                 if (empty(Image_GD::$_available_functions[Image_GD::IMAGECONVOLUTION]))
                 {
-                        throw new ErrorException('This method requires :function, which is only available in the bundled version of GD',
-                                array(':function' => 'imageconvolution'));
+                        throw new ErrorException('This method requires imageconvolution, which is only available in the bundled version of GD');
                 }
 
                 // Loads image if not yet loaded
@@ -372,8 +368,7 @@ class Kohana_Image_GD extends Kohana_Image {
         {
                 if (empty(Image_GD::$_available_functions[Image_GD::IMAGEFILTER]))
                 {
-                        throw new ErrorException('This method requires :function, which is only available in the bundled version of GD',
-                                array(':function' => 'imagefilter'));
+                        throw new ErrorException('This method requires imagefilter, which is only available in the bundled version of GD');
                 }
 
                 // Loads image if not yet loaded
@@ -453,8 +448,7 @@ class Kohana_Image_GD extends Kohana_Image {
         {
                 if (empty(Image_GD::$_available_functions[Image_GD::IMAGELAYEREFFECT]))
                 {
-                        throw new ErrorException('This method requires :function, which is only available in the bundled version of GD',
-                                array(':function' => 'imagelayereffect'));
+                        throw new ErrorException('This method requires imagelayereffect, which is only available in the bundled version of GD');
                 }
 
                 // Loads image if not yet loaded
@@ -636,8 +630,7 @@ class Kohana_Image_GD extends Kohana_Image {
                                 $quality = 9;
                         break;
                         default:
-                                throw new ErrorException('Installed GD does not support :type images',
-                                        array(':type' => $extension));
+                                throw new ErrorException(sprintf('Installed GD does not support %s images',$extension));
                         break;
                 }
 

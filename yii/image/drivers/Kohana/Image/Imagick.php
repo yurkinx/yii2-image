@@ -88,6 +88,28 @@ class Kohana_Image_Imagick extends Kohana_Image {
                 return FALSE;
         }
 
+        /**
+         * Adaptation the image.
+         *
+         * @param   integer  $width      image width
+         * @param   integer  $height     image height
+         * @param   integer  $bg_width   background width
+         * @param   integer  $bg_height  background height
+         * @param   integer  $offset_x   offset from the left
+         * @param   integer  $offset_y   offset from the top
+         */
+        protected function _do_adapt($width, $height, $bg_width, $bg_height, $offset_x, $offset_y)
+        {
+                $image = new Imagick();
+                $image->newImage($bg_width, $bg_height, "none");
+                $image->compositeImage($this->im, Imagick::COMPOSITE_ADD, $offset_x, $offset_y);
+                $this->im->clear();
+                $this->im->destroy();
+                $this->im = $image;
+                $this->width = $bg_width;
+                $this->height = $bg_height;
+        }
+
         protected function _do_crop($width, $height, $offset_x, $offset_y)
         {
                 if ($this->im->cropImage($width, $height, $offset_x, $offset_y))

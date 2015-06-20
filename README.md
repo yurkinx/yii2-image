@@ -67,6 +67,7 @@ Possible resize constrains:
     const INVERSE = 0x05;
     const PRECISE = 0x06;
     const ADAPT   = 0x07;
+    const CROP    = 0x08;
 ```
 **Using flip with flipping directions**
 ```php

@@ -21,6 +21,7 @@ abstract class Kohana_Image {
         const INVERSE = 0x05;
         const PRECISE = 0x06;
         const ADAPT   = 0x07;
+        const CROP    = 0x08;
 
         // Flipping directions
         const HORIZONTAL = 0x11;
@@ -191,6 +192,25 @@ abstract class Kohana_Image {
                 {
                         // Choose the master dimension automatically
                         $master = Image::AUTO;
+                }
+                elseif ($master === Image::CROP)
+                {
+                        if (empty($width) || empty($height))
+                        {
+                                return $this->resize($width, $height, Image::AUTO);
+                        }
+
+                        $master = $this->width / $this->height > $width / $height ? Image::HEIGHT : Image::WIDTH;
+                        $this->resize($width, $height, $master);
+
+                        if ($this->width !== $width || $this->height !== $height) 
+                        {
+                                $offset_x = round(($this->width - $width) / 2);
+                                $offset_y = round(($this->height - $height) / 2);
+                                $this->crop($width, $height, $offset_x, $offset_y);
+                        }
+
+                        return $this;
                 }
                 // Image::WIDTH and Image::HEIGHT deprecated. You can use it in old projects,
                 // but in new you must pass empty value for non-master dimension

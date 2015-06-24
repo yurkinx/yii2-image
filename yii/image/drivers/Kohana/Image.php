@@ -20,6 +20,8 @@ abstract class Kohana_Image {
         const AUTO    = 0x04;
         const INVERSE = 0x05;
         const PRECISE = 0x06;
+        const ADAPT   = 0x07;
+        const CROP    = 0x08;
 
         // Flipping directions
         const HORIZONTAL = 0x11;
@@ -172,6 +174,11 @@ abstract class Kohana_Image {
          *
          *     // Resize to 200x500 pixels, ignoring aspect ratio
          *     $image->resize(200, 500, Image::NONE);
+         * 
+         *     // Resize to 400 pixels on the shortest side, puts it in the center 
+         *     // of the image with the transparent edges, keeping aspect ratio, 
+         *     // output size will be 400x400 pixels
+         *     $image->resize(400, 400, Image::ADAPT);
          *
          * @param   integer  $width   new width
          * @param   integer  $height  new height
@@ -185,6 +192,25 @@ abstract class Kohana_Image {
                 {
                         // Choose the master dimension automatically
                         $master = Image::AUTO;
+                }
+                elseif ($master === Image::CROP)
+                {
+                        if (empty($width) || empty($height))
+                        {
+                                return $this->resize($width, $height, Image::AUTO);
+                        }
+
+                        $master = $this->width / $this->height > $width / $height ? Image::HEIGHT : Image::WIDTH;
+                        $this->resize($width, $height, $master);
+
+                        if ($this->width !== $width || $this->height !== $height) 
+                        {
+                                $offset_x = round(($this->width - $width) / 2);
+                                $offset_y = round(($this->height - $height) / 2);
+                                $this->crop($width, $height, $offset_x, $offset_y);
+                        }
+
+                        return $this;
                 }
                 // Image::WIDTH and Image::HEIGHT deprecated. You can use it in old projects,
                 // but in new you must pass empty value for non-master dimension
@@ -201,6 +227,17 @@ abstract class Kohana_Image {
 
                         // Set empty width for backward compatibility
                         $width = NULL;
+                }
+                elseif ($master === Image::ADAPT) 
+                {
+                        if (empty($width)) 
+                        {
+                                $width = $this->width * $height / $this->height;
+                        } 
+                        elseif (empty($height)) 
+                        {
+                                $height = $this->height * $width / $this->width;
+                        }
                 }
 
                 if (empty($width))
@@ -271,6 +308,28 @@ abstract class Kohana_Image {
                 // Convert the width and height to integers, minimum value is 1px
                 $width  = max(round($width), 1);
                 $height = max(round($height), 1);
+
+                // Adapt the image if the ratios are not equivalent
+                if ($master === Image::ADAPT && $width / $height !== $this->width / $this->height)
+                {
+                        $image_width = $bg_width = $this->width;
+                        $image_height = $bg_height = $this->height;
+
+                        $offset_x = $offset_y = 0;
+
+                        if ($width / $height > $image_width / $image_height) 
+                        {
+                                $bg_width = floor($image_height * $width / $height);
+                                $offset_x = abs(floor(($bg_width - $image_width) / 2));
+                        }
+                        else 
+                        {
+                                $bg_height = floor($image_width * $height / $width);
+                                $offset_y = abs(floor(($bg_height - $image_height) / 2));
+                        }
+
+                        $this->_do_adapt($image_width, $image_height, $bg_width, $bg_height, $offset_x, $offset_y);
+                }
 
                 $this->_do_resize($width, $height);
 
@@ -675,6 +734,18 @@ abstract class Kohana_Image {
          * @return  void
          */
         abstract protected function _do_resize($width, $height);
+
+        /**
+         * Adaptation the image.
+         * 
+         * @param   integer  $width      image width
+         * @param   integer  $height     image height
+         * @param   integer  $bg_width   background width
+         * @param   integer  $bg_height  background height
+         * @param   integer  $offset_x   offset from the left
+         * @param   integer  $offset_y   offset from the top
+         */
+        abstract protected function _do_adapt($width, $height, $bg_width, $bg_height, $offset_x, $offset_y);
 
         /**
          * Execute a crop.

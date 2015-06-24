@@ -54,7 +54,8 @@ $image->watermark(Image $watermark, $offset_x = NULL, $offset_y = NULL, $opacity
 ```
 **Using resize with resize constrains**
 ```php
-$image->resize($width,$height,Yii\image\drivers\Image::HEIGHT);
+$image->resize($width, $height, \yii\image\drivers\Image::HEIGHT);
+$image->resize($width, $height, \yii\image\drivers\Image::ADAPT)->background('#fff');
 ```
 Possible resize constrains:
 ```php
@@ -65,11 +66,13 @@ Possible resize constrains:
     const AUTO    = 0x04;
     const INVERSE = 0x05;
     const PRECISE = 0x06;
+    const ADAPT   = 0x07;
+    const CROP    = 0x08;
 ```
 **Using flip with flipping directions**
 ```php
 // Flipping directions ($direction)
-$image->flip(Yii\image\drivers\Image::HORIZONTAL);
+$image->flip(\yii\image\drivers\Image::HORIZONTAL);
 ```
 Possible flipping directions:
 ```php

@@ -69,10 +69,10 @@ class Kohana_Image_GD extends Kohana_Image {
                 return Image_GD::$_checked = TRUE;
         }
 
-        // Temporary image resource
+        /* @var resource Temporary image resource */
         protected $_image;
 
-        // Function name to open Image
+        /* @var string Function name to open Image */
         protected $_create_function;
 
         /**
@@ -207,6 +207,33 @@ class Kohana_Image_GD extends Kohana_Image {
                         $this->width  = imagesx($image);
                         $this->height = imagesy($image);
                 }
+        }
+
+        /**
+         * Adaptation the image.
+         *
+         * @param   integer  $width      image width
+         * @param   integer  $height     image height
+         * @param   integer  $bg_width   background width
+         * @param   integer  $bg_height  background height
+         * @param   integer  $offset_x   offset from the left
+         * @param   integer  $offset_y   offset from the top
+         */
+        protected function _do_adapt($width, $height, $bg_width, $bg_height, $offset_x, $offset_y)
+        {
+                $this->_load_image();
+                $image = $this->_image;
+                $this->_image = $this->_create($bg_width, $bg_height);
+                $this->width = $bg_width;
+                $this->height = $bg_height;
+                imagealphablending($this->_image, false);
+                $col = imagecolorallocatealpha($this->_image, 0, 255, 0, 127);
+                imagefilledrectangle($this->_image, 0, 0, $bg_width, $bg_height, $col);
+                imagealphablending($this->_image, true);
+                imagecopy($this->_image, $image, $offset_x, $offset_y, 0, 0, $width, $height);
+                imagealphablending($this->_image, false);
+                imagesavealpha($this->_image, true);
+                imagedestroy($image);
         }
 
         /**

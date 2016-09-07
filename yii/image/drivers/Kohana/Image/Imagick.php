@@ -56,9 +56,17 @@ class Kohana_Image_Imagick extends Kohana_Image {
                 $this->im = new Imagick;
                 $this->im->readImage($file);
 
-                // Force RGB colorspace
-                $this->im->setColorspace(Imagick::COLORSPACE_RGB);
-                $this->im->transformImageColorspace(Imagick::COLORSPACE_RGB);
+                // Force RGB colorspace if we are using non-RGB
+                $imageColorspace = $this->im->getImageColorspace();
+                if ($imageColorspace !== Imagick::COLORSPACE_RGB &&
+                    $imageColorspace !== Imagick::COLORSPACE_SRGB
+                ) {
+                    $imageColorspace = Imagick::COLORSPACE_RGB;
+                }
+                if ($this->im->getImageColorspace() !== $imageColorspace) {
+                    $this->im->transformImageColorspace($imageColorspace);
+                }
+                $this->im->setColorspace($imageColorspace);
 
                 if ( ! $this->im->getImageAlphaChannel())
                 {
@@ -232,7 +240,9 @@ class Kohana_Image_Imagick extends Kohana_Image {
                 // Convert the Image intance into an Imagick instance
                 $watermark = new Imagick;
                 $watermark->readImageBlob($image->render(), $image->file);
-                $watermark->transformImageColorspace(Imagick::COLORSPACE_RGB);
+                if ($this->im->getImageColorspace() !== $this->im->getColorspace()) {
+                    $watermark->transformImageColorspace($this->im->getColorspace());
+                }
 
                 if ($watermark->getImageAlphaChannel() !== Imagick::ALPHACHANNEL_ACTIVATE)
                 {

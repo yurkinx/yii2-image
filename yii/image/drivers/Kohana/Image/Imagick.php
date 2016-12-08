@@ -56,6 +56,18 @@ class Kohana_Image_Imagick extends Kohana_Image {
                 $this->im = new Imagick;
                 $this->im->readImage($file);
 
+                // Force RGB colorspace if we are using non-RGB
+                $imageColorspace = $this->im->getImageColorspace();
+                if ($imageColorspace !== Imagick::COLORSPACE_RGB &&
+                    $imageColorspace !== Imagick::COLORSPACE_SRGB
+                ) {
+                    $imageColorspace = Imagick::COLORSPACE_RGB;
+                }
+                if ($this->im->getImageColorspace() !== $imageColorspace) {
+                    $this->im->transformImageColorspace($imageColorspace);
+                }
+                $this->im->setColorspace($imageColorspace);
+
                 if ( ! $this->im->getImageAlphaChannel())
                 {
                         // Force the image to have an alpha channel
@@ -206,9 +218,6 @@ class Kohana_Image_Imagick extends Kohana_Image {
                 // Force the background color to be transparent
                 // $image->setImageBackgroundColor(new ImagickPixel('transparent'));
 
-                // Match the colorspace between the two images before compositing
-                $image->setColorspace($this->im->getColorspace());
-
                 // Place the image and reflection into the container
                 if ($image->compositeImage($this->im, Imagick::COMPOSITE_SRC, 0, 0)
                 AND $image->compositeImage($reflection, Imagick::COMPOSITE_OVER, 0, $this->height))
@@ -231,6 +240,9 @@ class Kohana_Image_Imagick extends Kohana_Image {
                 // Convert the Image intance into an Imagick instance
                 $watermark = new Imagick;
                 $watermark->readImageBlob($image->render(), $image->file);
+                if ($this->im->getImageColorspace() !== $this->im->getColorspace()) {
+                    $watermark->transformImageColorspace($this->im->getColorspace());
+                }
 
                 if ($watermark->getImageAlphaChannel() !== Imagick::ALPHACHANNEL_ACTIVATE)
                 {
@@ -243,9 +255,6 @@ class Kohana_Image_Imagick extends Kohana_Image {
                         // NOTE: Using setImageOpacity will destroy current alpha channels!
                         $watermark->evaluateImage(Imagick::EVALUATE_MULTIPLY, $opacity / 100, Imagick::CHANNEL_ALPHA);
                 }
-
-                // Match the colorspace between the two images before compositing
-                // $watermark->setColorspace($this->im->getColorspace());
 
                 // Apply the watermark to the image
                 return $this->im->compositeImage($watermark, Imagick::COMPOSITE_DISSOLVE, $offset_x, $offset_y);
@@ -271,9 +280,6 @@ class Kohana_Image_Imagick extends Kohana_Image {
 
                 // NOTE: Using setImageOpacity will destroy current alpha channels!
                 $background->evaluateImage(Imagick::EVALUATE_MULTIPLY, $opacity / 100, Imagick::CHANNEL_ALPHA);
-
-                // Match the colorspace between the two images before compositing
-                $background->setColorspace($this->im->getColorspace());
 
                 if ($background->compositeImage($this->im, Imagick::COMPOSITE_DISSOLVE, 0, 0))
                 {

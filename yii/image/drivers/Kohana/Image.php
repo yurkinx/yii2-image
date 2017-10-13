@@ -702,6 +702,23 @@ abstract class Kohana_Image {
         }
 
         /**
+         * Enable or disable interlace for progressive images
+         *
+         * GD
+         * Just use true or false for enable or disable interlace for jpeg files.
+         *
+         * Imagick
+         * Use INTERLACE constants from http://php.net/manual/en/imagick.constants.php
+         *
+         * @param $scheme bool|int
+         * @return mixed
+         */
+        public function interlace($scheme)
+        {
+            return $this->_do_interlace($scheme);
+        }
+
+        /**
          * Render the image and return the binary string.
          *
          *     // Render the image at 50% quality
@@ -831,5 +848,13 @@ abstract class Kohana_Image {
          * @return  string
          */
         abstract protected function _do_render($type, $quality);
+
+        /**
+         * Execute an interlace.
+         *
+         * @param $scheme
+         * @return mixed
+         */
+        abstract protected function _do_interlace($scheme);
 
 } // End Image

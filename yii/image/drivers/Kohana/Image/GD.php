@@ -685,4 +685,12 @@ class Kohana_Image_GD extends Kohana_Image {
                 return $image;
         }
 
+        protected function _do_interlace($scheme)
+        {
+            // Loads image if not yet loaded
+            $this->_load_image();
+
+            return imageinterlace($this->_image, $scheme);
+        }
+
 } // End Image_GD

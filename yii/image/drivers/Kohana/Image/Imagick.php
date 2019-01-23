@@ -364,4 +364,9 @@ class Kohana_Image_Imagick extends Kohana_Image {
 
                 return array($format, $type);
         }
+
+        protected function _do_interlace($scheme)
+        {
+            return $this->im->setInterlaceScheme($scheme);
+        }
 } // End Kohana_Image_Imagick

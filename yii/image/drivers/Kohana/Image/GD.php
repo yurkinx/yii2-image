@@ -157,9 +157,10 @@ class Kohana_Image_GD extends Kohana_Image {
          *
          * @param   integer  $width   new width
          * @param   integer  $height  new height
+         * @param   integer  $quality - reserved for future use
          * @return  void
          */
-        protected function _do_resize($width, $height)
+        protected function _do_resize($width, $height, $quality)
         {
                 // Presize width and height
                 $pre_width = $this->width;

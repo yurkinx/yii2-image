@@ -86,16 +86,33 @@ class Kohana_Image_Imagick extends Kohana_Image {
                 $this->im->destroy();
         }
 
-        protected function _do_resize($width, $height)
+        /**
+         * Scales an image using resizeImage for best quality @link http://php.net/manual/en/imagick.resizeimage.php
+         * but lower speed, or scaleImage for best speed and lower quality @link http://php.net/manual/en/imagick.scaleimage.php
+         * @param int $width
+         * @param int $height
+         * @param int $quality
+         * @return bool
+         */
+        protected function _do_resize($width, $height, $quality)
         {
-                if ($this->im->scaleImage($width, $height))
-                {
-                        // Reset the width and height
-                        $this->width = $this->im->getImageWidth();
-                        $this->height = $this->im->getImageHeight();
+            if($quality == 100) {
+                if ($this->im->resizeImage($width, $height, Imagick::FILTER_LANCZOS, 1)) {
+                    // Reset the width and height
+                    $this->width = $this->im->getImageWidth();
+                    $this->height = $this->im->getImageHeight();
 
-                        return TRUE;
+                    return TRUE;
                 }
+            }else{
+                if ($this->im->sampleImage($width, $height)) {
+                    // Reset the width and height
+                    $this->width = $this->im->getImageWidth();
+                    $this->height = $this->im->getImageHeight();
+
+                     return TRUE;
+                }
+            }
 
                 return FALSE;
         }

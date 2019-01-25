@@ -49,7 +49,7 @@ abstract class Kohana_Image {
         {
                 if ($driver === NULL)
                 {
-                       
+
                         // Use the default driver
                         $driver = Image::$default_driver;
                 }
@@ -174,20 +174,29 @@ abstract class Kohana_Image {
          *
          *     // Resize to 200x500 pixels, ignoring aspect ratio
          *     $image->resize(200, 500, Image::NONE);
-         * 
-         *     // Resize to 400 pixels on the shortest side, puts it in the center 
-         *     // of the image with the transparent edges, keeping aspect ratio, 
+         *
+         *     // Resize to 400 pixels on the shortest side, puts it in the center
+         *     // of the image with the transparent edges, keeping aspect ratio,
          *     // output size will be 400x400 pixels
          *     $image->resize(400, 400, Image::ADAPT);
+         *
+         *      // Resize to 500 pixels width, keeping aspect ratio
+         *      // and trying to achieve best quality, using slower filters
+         *
+         *      $image->resize(500, NULL, NULL, 100)
          *
          * @param   integer  $width   new width
          * @param   integer  $height  new height
          * @param   integer  $master  master dimension
+         * @param   integer  $quality quality of the output image 1-100 (range is reserved for future use) use 1 for best speed, 100 for best quality. Default 1, best speed
          * @return  $this
          * @uses    Image::_do_resize
          */
-        public function resize($width = NULL, $height = NULL, $master = NULL)
+        public function resize($width = NULL, $height = NULL, $master = NULL, $quality = NULL)
         {
+                if($quality === NULL){
+                    $quality = 1;
+                }
                 if ($master === NULL)
                 {
                         // Choose the master dimension automatically
@@ -203,7 +212,7 @@ abstract class Kohana_Image {
                         $master = $this->width / $this->height > $width / $height ? Image::HEIGHT : Image::WIDTH;
                         $this->resize($width, $height, $master);
 
-                        if ($this->width !== $width || $this->height !== $height) 
+                        if ($this->width !== $width || $this->height !== $height)
                         {
                                 $offset_x = round(($this->width - $width) / 2);
                                 $offset_y = round(($this->height - $height) / 2);
@@ -228,13 +237,13 @@ abstract class Kohana_Image {
                         // Set empty width for backward compatibility
                         $width = NULL;
                 }
-                elseif ($master === Image::ADAPT) 
+                elseif ($master === Image::ADAPT)
                 {
-                        if (empty($width)) 
+                        if (empty($width))
                         {
                                 $width = $this->width * $height / $this->height;
-                        } 
-                        elseif (empty($height)) 
+                        }
+                        elseif (empty($height))
                         {
                                 $height = $this->height * $width / $this->width;
                         }
@@ -317,12 +326,12 @@ abstract class Kohana_Image {
 
                         $offset_x = $offset_y = 0;
 
-                        if ($width / $height > $image_width / $image_height) 
+                        if ($width / $height > $image_width / $image_height)
                         {
                                 $bg_width = floor($image_height * $width / $height);
                                 $offset_x = abs(floor(($bg_width - $image_width) / 2));
                         }
-                        else 
+                        else
                         {
                                 $bg_height = floor($image_width * $height / $width);
                                 $offset_y = abs(floor(($bg_height - $image_height) / 2));
@@ -331,7 +340,10 @@ abstract class Kohana_Image {
                         $this->_do_adapt($image_width, $image_height, $bg_width, $bg_height, $offset_x, $offset_y);
                 }
 
-                $this->_do_resize($width, $height);
+            // The quality must be in the range of 1 to 100
+                $quality = min(max($quality, 1), 100);
+
+                $this->_do_resize($width, $height, $quality);
 
                 return $this;
         }
@@ -748,13 +760,14 @@ abstract class Kohana_Image {
          *
          * @param   integer  $width   new width
          * @param   integer  $height  new height
+         * @param   integer  $quality quality of output image: 1-100. default 1 for best resizing speed
          * @return  void
          */
-        abstract protected function _do_resize($width, $height);
+        abstract protected function _do_resize($width, $height, $quality);
 
         /**
          * Adaptation the image.
-         * 
+         *
          * @param   integer  $width      image width
          * @param   integer  $height     image height
          * @param   integer  $bg_width   background width

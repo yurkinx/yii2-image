@@ -6,12 +6,19 @@ http://www.yiiframework.com/extension/image/ and Kohana Image Library https://gi
 
 Installation
 ------------
-```code
+**Install as a [composer package](https://packagist.org/packages/yurkinx/yii2-image)**
+> Use this method to get continuous updates.
+
+```
+composer require yurkinx/yii2-image
+```
+or include the dependency in the `composer.json` file:
+```json
 {
-	"require": 
-	{
-  		"yurkinx/yii2-image": "dev-master"
-	}
+    "require": {
+        "yurkinx/yii2-image": "^1.2"
+       
+    }
 }
 ```
 Configuration
@@ -57,6 +64,12 @@ $image->watermark(Image $watermark, $offset_x = NULL, $offset_y = NULL, $opacity
 $image->resize($width, $height, \yii\image\drivers\Image::HEIGHT);
 $image->resize($width, $height, \yii\image\drivers\Image::ADAPT)->background('#fff');
 ```
+**Using resize with resize constrains and best quality output image [for Imagick driver only]**
+Use 1 for best speed and lower quality, 100 for best quality and lower speed. Only values 1,100 currently supported
+```php
+$image->resize($width, NULL, \yii\image\drivers\Image::HEIGHT, 100);
+```
+
 Possible resize constrains:
 ```php
 // Resizing constraints ($master)

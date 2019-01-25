@@ -6,12 +6,19 @@ http://www.yiiframework.com/extension/image/ and Kohana Image Library https://gi
 
 Installation
 ------------
-```code
+**Install as a [composer package](https://packagist.org/packages/yurkinx/yii2-image)**
+> Use this method to get continuous updates.
+
+```
+composer require yurkinx/yii2-image
+```
+or include the dependency in the `composer.json` file:
+```json
 {
-	"require": 
-	{
-  		"yurkinx/yii2-image": "dev-master"
-	}
+    "require": {
+        "yurkinx/yii2-image": "^1.2"
+       
+    }
 }
 ```
 Configuration

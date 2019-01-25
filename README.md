@@ -57,6 +57,12 @@ $image->watermark(Image $watermark, $offset_x = NULL, $offset_y = NULL, $opacity
 $image->resize($width, $height, \yii\image\drivers\Image::HEIGHT);
 $image->resize($width, $height, \yii\image\drivers\Image::ADAPT)->background('#fff');
 ```
+**Using resize with resize constrains and best quality output image [for Imagick driver only]**
+Use 1 for best speed and lower quality, 100 for best quality and lower speed. Only values 1,100 currently supported
+```php
+$image->resize($width, NULL, \yii\image\drivers\Image::HEIGHT, 100);
+```
+
 Possible resize constrains:
 ```php
 // Resizing constraints ($master)

@@ -125,7 +125,8 @@ class Kohana_Image_GD extends Kohana_Image {
          */
         public function __destruct()
         {
-                if (is_resource($this->_image))
+                if ( (is_resource($this->_image) && get_resource_type($this->_image) === 'gd')
+                  || (is_object($this->_image) && $this->_image instanceof \GDImage) )
                 {
                         // Free all resources
                         imagedestroy($this->_image);
@@ -139,7 +140,8 @@ class Kohana_Image_GD extends Kohana_Image {
          */
         protected function _load_image()
         {
-                if ( ! is_resource($this->_image))
+                if ( ! ( (is_resource($this->_image) && get_resource_type($this->_image) === 'gd')
+                      || (is_object($this->_image) && $this->_image instanceof \GDImage) ) )
                 {
                         // Gets create function
                         $create = $this->_create_function;

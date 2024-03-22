@@ -104,6 +104,9 @@ class Kohana_Image_GD extends Kohana_Image {
                         case IMAGETYPE_PNG:
                                 $create = 'imagecreatefrompng';
                         break;
+                        case IMAGETYPE_WEBP:
+                                $create = 'imagecreatefromwebp';
+                        break;
                 }
 
                 if ( ! isset($create) OR ! function_exists($create))
@@ -656,6 +659,11 @@ class Kohana_Image_GD extends Kohana_Image {
 
                                 // Use a compression level of 9 (does not affect quality!)
                                 $quality = 9;
+                        break;
+                        case 'webp':
+                                // Save a WEBP file
+                                $save = 'imagewebp';
+                                $type = IMAGETYPE_WEBP;
                         break;
                         default:
                                 throw new ErrorException(sprintf('Installed GD does not support %s images',$extension));

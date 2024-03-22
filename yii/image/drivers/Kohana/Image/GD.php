@@ -661,7 +661,7 @@ class Kohana_Image_GD extends Kohana_Image {
                                 $quality = 9;
                         break;
                         case 'webp':
-                                // Save a PNG file
+                                // Save a WEBP file
                                 $save = 'imagewebp';
                                 $type = IMAGETYPE_WEBP;
                         break;

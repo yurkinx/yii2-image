@@ -4,6 +4,12 @@ yii2-image
 Simple to use Yii2 Framework extension for image manipulating using powerful Kohana Image Library.  Inspired by old yii extension 
 http://www.yiiframework.com/extension/image/ and Kohana Image Library https://github.com/kohana/image
 
+Requirements
+------------
+- PHP 5.4 or newer (the GD driver is tested on PHP 8.2 and 8.4)
+- Yii 2
+- GD or Imagick PHP extension
+
 Installation
 ------------
 **Install as a [composer package](https://packagist.org/packages/yurkinx/yii2-image)**
@@ -16,7 +22,7 @@ or include the dependency in the `composer.json` file:
 ```json
 {
     "require": {
-        "yurkinx/yii2-image": "^1.2"
+        "yurkinx/yii2-image": "^1.4"
        
     }
 }
@@ -94,3 +100,9 @@ Possible flipping directions:
      const VERTICAL   = 0x12;
 ```
 
+Changelog
+---------
+**1.4**
+
+- GD driver: on PHP 8.0+ every operation (resize, crop, rotate, ...) was silently lost and `save()` wrote the unchanged original. Fixed.
+- GD driver: `rotate()` no longer throws `ArgumentCountError` on PHP 8.3+.

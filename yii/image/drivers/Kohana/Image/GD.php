@@ -139,7 +139,10 @@ class Kohana_Image_GD extends Kohana_Image {
          */
         protected function _load_image()
         {
-                if ( ! is_resource($this->_image))
+                // PHP 8+ GD images are GdImage objects, not resources: without the instanceof
+                // check the original file was reloaded here and every previous operation
+                // (resize, crop, rotate, ...) was silently lost.
+                if ( ! (is_resource($this->_image) OR $this->_image instanceof \GdImage))
                 {
                         // Gets create function
                         $create = $this->_create_function;
@@ -287,7 +290,9 @@ class Kohana_Image_GD extends Kohana_Image {
                 $transparent = imagecolorallocatealpha($this->_image, 0, 0, 0, 127);
 
                 // Rotate, setting the transparent color
-                $image = imagerotate($this->_image, 360 - $degrees, $transparent, 1);
+                // No 4th argument: $ignore_transparent was ignored since PHP 5.5 and removed in
+                // PHP 8.3, where passing it throws ArgumentCountError.
+                $image = imagerotate($this->_image, 360 - $degrees, $transparent);
 
                 // Save the alpha of the rotated image
                 imagesavealpha($image, TRUE);
